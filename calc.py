@@ -30,10 +30,13 @@ def calc(line):
                 if part > 0 and book[listline[part-1]].isnumeric():
                     pass
                 elif part != (len(listline) - 1):
-                    if book[listline[part + 1]].isnumeric():
-                        result += str(int(book[listline[part]]) + int(book[listline[part+1]]))
+                    if listline[part + 1] in book:
+                        if book[listline[part + 1]].isnumeric():
+                            result += str(int(book[listline[part]]) + int(book[listline[part+1]]))
+                        else:
+                            result += book[listline[part]]
                     else:
-                        result += book[listline[part]]
+                        return 'Неверный ввод'
                 else:
                     result += book[listline[part]]
             else:
@@ -44,8 +47,10 @@ def calc(line):
     #создаю второй словарь, который является перевернутой версией исходного,
     #чтобы перевести математический результат в число
     invbook = {v: k for k, v in book.items()}
-    #print(eval(result)) проверка для себя
+    #print(eval(result))
     #получаю результат выражения с помощью eval()
+    if result.count('(') != result.count(')'):
+        return 'Не то кол-во скобок'
     intresult = eval(result)
     strresult = str(intresult)
     total = ''
@@ -75,5 +80,3 @@ print('''Пожалуйста, введите строковое выражен�
 операции вычитания, сложения и умножения.''')
 numeric = input()
 print(calc(numeric))
-
-
