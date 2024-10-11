@@ -1,4 +1,7 @@
 def calc(line):
+    ''' функция принимает на вход строчку, состоящую из слов,
+    которые обозначают цифры, или числа, или математические операции, или доп символы (скобки)
+    функция возвращает результат математического выражения в виде слов'''
     line = line.strip()
 
     #убираю лишние пробелы и создаю словарь
@@ -19,24 +22,29 @@ def calc(line):
     #потом посимвольно перевожу строку в математический вид с помощью словаря
     listline = line.split(' ')
     result = ''
+    if line =='':
+        return 'Попробуйте снова'
     for part in range(0, len(listline)):
-        if book[listline[part]].isnumeric():
-            if part > 0 and book[listline[part-1]].isnumeric():
-                pass
-            elif part != (len(listline) - 1):
-                if book[listline[part + 1]].isnumeric():
-                    result += str(int(book[listline[part]]) + int(book[listline[part+1]]))
+        if listline[part] in book:
+            if book[listline[part]].isnumeric():
+                if part > 0 and book[listline[part-1]].isnumeric():
+                    pass
+                elif part != (len(listline) - 1):
+                    if book[listline[part + 1]].isnumeric():
+                        result += str(int(book[listline[part]]) + int(book[listline[part+1]]))
+                    else:
+                        result += book[listline[part]]
                 else:
                     result += book[listline[part]]
             else:
                 result += book[listline[part]]
         else:
-            result += book[listline[part]]
+            return 'Попробуйте снова'
 
     #создаю второй словарь, который является перевернутой версией исходного,
     #чтобы перевести математический результат в число
     invbook = {v: k for k, v in book.items()}
-    print(eval(result))
+    #print(eval(result)) проверка для себя
     #получаю результат выражения с помощью eval()
     intresult = eval(result)
     strresult = str(intresult)
@@ -62,6 +70,9 @@ def calc(line):
                 break
             delit = delit[:-1]
     return total
+print('''Пожалуйста, введите строковое выражение для калькулятора. 
+Вы можете использовать числа до девяносто девяти, скобки,
+операции вычитания, сложения и умножения.''')
 numeric = input()
 print(calc(numeric))
 
